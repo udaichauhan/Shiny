@@ -27,36 +27,6 @@ stores = as.tibble(fread('stores.csv'))
 str(stores)
 
 ###################################################################################
-total = train %>%
-  filter(store_nbr == 44) %>%
-  filter(item_nbr == 329362) %>%
-  arrange(desc(date)) %>%
-  select(date,unit_sales) %>% head(60)
-rm(total)
-colnames(total) = c("ds","y")
-
-train2=total[c(16:nrow(total)),]
-colnames(train2) = c("ds","y")
-test2=total[c(1:15),]
-colnames(test2) = c("ds","y")
-
-m <- prophet(total,changepoint.prior.scale = 0.1)
-
-future <- make_future_dataframe(m, periods = 15,freq = "day")
-
-forecast <- predict(m, future)
-
-predictions = tail(round(forecast$yhat),15)
-
-predictions
-
-##plot(m, forecast)
-
-##cat("The predictions are ","\n")
-
-## Break into the Prophet Components
-##prophet_plot_components(m, forecast)
-######################################################################
 
 set.seed(1234)
 
@@ -84,13 +54,11 @@ ui<-fluidPage(theme = shinytheme("darkly"),
                                                    style = "color:gold;font-family:Courier;text-align:center",
                                                    icon("list-ol",class="fa-align-right fa-1x"))
                             ),
-                            radioButtons("onpromotion", 
-                                         
-                                         label = h2("On Promotion?", 
-                                                    style = "color:gold;font-family:Courier;text-align:left",
-                                                    icon("money",class="fa-align-right fa-1x")), 
-                                         choices = list("Yes" = 1, "No" = 0), 
-                                         selected = 1),
+                            selectizeInput("onpromotion",
+                                           h2("Is it on promotion?", 
+                                              style = "color:gold;font-family:Courier;text-align:center",
+                                              icon("list-ol",class="fa-align-right fa-1x")),
+                                           c("Yes","No")),
                             
                             dateInput("date",
                                       value= '2017-08-16',
@@ -123,7 +91,6 @@ ui<-fluidPage(theme = shinytheme("darkly"),
                                style = "color:gold;font-family:Courier;text-align:centre")
                             
                   ))))
-nrow(train[train["store_nbr"]==40 & train["item_nbr"]==329362,])
 
 #input <- as.data.frame(cbind(store = 44, item = 329362, date = "2017-08-05"))
 head(train)
@@ -135,7 +102,7 @@ server<-function(input, output) {
   
   output$value <- renderText({
     if (input$go > 0){
-      #########################################################      
+#########################################################      
       total = train %>%
         filter(store_nbr == input$store) %>%
         filter(item_nbr == input$item) %>%
@@ -145,22 +112,22 @@ server<-function(input, output) {
       colnames(total) = c("ds","y")
       
       if(input$onpromotion=="Yes"){
-        if(nrow(total)>10){
-          m <- prophet(total,changepoint.prior.scale = 0.1)
-          
-          future <- make_future_dataframe(m, periods = 15,freq = "day")
-          
-          forecast <- predict(m, future)
-          predictions = tail(round(forecast$yhat),15)
-          a=predictions[(day(as.Date(input$date))-15)]
-          paste(a*1.5)
-          
-          
-          
-        }
-        else{
-          k=mean(train[train["item_nbr"]==input$item,"unit_sales"])
-          paste(k*1.5)
+      if(nrow(total)>10){
+      m <- prophet(total,changepoint.prior.scale = 0.1)
+      
+      future <- make_future_dataframe(m, periods = 15,freq = "day")
+      
+      forecast <- predict(m, future)
+      predictions = tail(round(forecast$yhat),15)
+      a=predictions[(day(as.Date(input$date))-15)]
+      paste(a*1.5)
+      
+      
+      
+      }
+      else{
+        k=mean(train[train["item_nbr"]==input$item,"unit_sales"])
+        paste(k*1.5)
         }
       } else {
         
@@ -182,7 +149,7 @@ server<-function(input, output) {
           paste(k)
         }
       }
-      #########################################################      
+#########################################################      
       #pred <- predict(lmfit,
       #                newdata = data.frame(item_nbr=as.numeric(input$item),
       #                                     store_nbr=as.numeric(input$store),
@@ -207,5 +174,5 @@ server<-function(input, output) {
     paste("Is the item on promotion?", input$onpromotion)})
   output$pred5 <- renderText({
     paste("Date selected", input$date)})
-}
+  }
 shinyApp(ui = ui, server=server)
