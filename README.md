@@ -1,5 +1,10 @@
 # Grocery Retail Forecasting Using Time Series Forecasting
 
+```
+#R #TimeSeriesForecasting #Prophet #RShiny
+```
+
+Project Report - https://www.dropbox.com/s/b3eutee5lojlfag/Final%20Project%20Team%209.docx?dl=0
 Project Video - https://drive.google.com/open?id=1Gv-APge2tJCMaJXZwuYh07jcTHRDx8Uo
 
 ## Abstract
