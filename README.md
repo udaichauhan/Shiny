@@ -1,4 +1,6 @@
-# GROCERY RETAIL FORECASTING USING TIME SERIES FORECASTING METHOD
+# Grocery Retail Forecasting USING TIME SERIES FORECASTING METHOD
+
+Project Video - https://drive.google.com/open?id=1Gv-APge2tJCMaJXZwuYh07jcTHRDx8Uo
 
 ## Abstract
 
