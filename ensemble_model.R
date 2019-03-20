@@ -10,7 +10,7 @@ library(prophet)
 
 fillColor = "#FFA07A"
 fillColor2 = "#F1C40F"
-#setwd("/home/sachamwa/Desktop/Project")
+#setwd("/home/uchauhan/Desktop/Project")
 
 train <- as.tibble(fread("train.csv", skip = 86672217, header = FALSE))
 setnames(train, c("id","date", "store_nbr", "item_nbr", "unit_sales","onpromotion"))
