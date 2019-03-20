@@ -18,4 +18,4 @@ Comparisons were made along the following dimensions:
 
 We have used R Studio to code the model. On the basing weightage on the above mentioned comparisons we chose the best time series modelling techniques and predicted the demand values for the next two weeks.
 
-The data for the project can be found at the following link: https://www.kaggle.com/c/favorita-grocery-sales-forecasting/data
+The data associated with the project can be found at the following link: https://www.kaggle.com/c/favorita-grocery-sales-forecasting/data
